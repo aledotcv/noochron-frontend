@@ -42,7 +42,14 @@ async function getNotes() {
         alert('Ocurrio un error al obtener las notas.');
     }
 }
-
+function truncateStr(string, length){
+    if(string.length >= length){
+        return string.slice(0, length) + "..."
+    }
+    else{
+        return string;
+    }
+}
 function populateNotes(notes) {
     const notesContainer = document.querySelector('.container .row');
     notesContainer.innerHTML = '';
@@ -56,7 +63,6 @@ function populateNotes(notes) {
     notes.forEach(note => {
         const noteElement = document.createElement('div');
         noteElement.className = 'col';
-        //   
 
         noteElement.innerHTML = `
             <div class="card" data-note-id="${note.noteId}" style="animation: bounceIn 1.1s;">
@@ -64,7 +70,7 @@ function populateNotes(notes) {
                     <div class="row">
                         <div class="col">
                             <h4>${note.title}</h4>
-                            <p>${new Date(note.noteCreationDate).toLocaleDateString()}</p>
+                            <p>${truncateStr(note.content, 30)}</p>
                         </div>
                         <div class="col">
                             ${note.tags.split(',').map(tag => `<p style="width: 146px;background: #3e68ff;border-radius: 11px;color: var(--bs-body-bg);text-align: center;">${tag}</p>`).join('')}
