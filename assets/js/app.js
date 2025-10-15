@@ -287,7 +287,7 @@ function startVoiceRecognition() {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'es-ES';
+    recognition.lang = 'es-MX';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     recognition.continuous = false;
@@ -331,4 +331,56 @@ function startVoiceRecognition() {
         voiceButton.style.backgroundColor = '#6c757d';
         voiceButton.textContent = '🎤';
     };
+}
+
+let currentSpeech = null;
+
+document.getElementById('textToSpeech').addEventListener('click', startTextToSpeech);
+
+function startTextToSpeech() {
+    if (!window.speechSynthesis) {
+        alert('Tu navegador no soporta TTS. Intenta con Chrome, Edge o Safari.');
+        return;
+    }
+
+    const noteContent = document.getElementById('noteContent').value;
+    const ttsButton = document.getElementById('textToSpeech');
+
+    if (!noteContent.trim()) {
+        alert('No hay contenido para reproducir en la nota');
+        return;
+    }
+
+    if (currentSpeech && speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        currentSpeech = null;
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        return;
+    }
+
+    currentSpeech = new SpeechSynthesisUtterance(noteContent);
+    currentSpeech.lang = 'es-MX';
+    currentSpeech.rate = 1.0;
+    currentSpeech.pitch = 1.0;
+    currentSpeech.volume = 1.0;
+
+    ttsButton.style.backgroundColor = '#ffc107';
+    ttsButton.textContent = '⏸️';
+
+    currentSpeech.onend = () => {
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        currentSpeech = null;
+    };
+
+    currentSpeech.onerror = (event) => {
+        if(event.error != 'interrupted')
+        alert('Error al reproducir el audio: ' + event.error);
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        currentSpeech = null;
+    };
+
+    speechSynthesis.speak(currentSpeech);
 }
