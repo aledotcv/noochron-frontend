@@ -384,3 +384,56 @@ function startTextToSpeech() {
 
     speechSynthesis.speak(currentSpeech);
 }
+
+document.getElementById('summarizeNote').addEventListener('click', summarizeNote);
+
+async function summarizeNote() {
+    const noteContent = document.getElementById('noteContent').value;
+    const sessionId = localStorage.getItem('sessionId');
+    const userId = localStorage.getItem('userId');
+    const summarizeButton = document.getElementById('summarizeNote');
+
+    if (!noteContent.trim()) {
+        alert('No hay contenido para resumir en la nota');
+        return;
+    }
+
+    if (noteContent.length > 5000) {
+        alert('El contenido excede el limite de 5000 caracteres. Por favor, reduce el texto.');
+        return;
+    }
+
+    try {
+        summarizeButton.disabled = true;
+        summarizeButton.style.opacity = '0.5';
+        summarizeButton.style.backgroundColor = '#6c757d';
+        summarizeButton.textContent = '⏳';
+
+        const response = await fetch('https://enabled-elephant-presently.ngrok-free.app/summarize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                'x-session-id': sessionId,
+                'x-user-id': userId
+            },
+            body: JSON.stringify({ content: noteContent })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('noteContent').value = result.summary;
+        } else {
+            const errorText = await response.text();
+            alert(`Error al resumir la nota: ${errorText}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrio un error al resumir la nota.');
+    } finally {
+        summarizeButton.disabled = false;
+        summarizeButton.style.opacity = '1';
+        summarizeButton.style.backgroundColor = '#ffc107';
+        summarizeButton.textContent = '✨';
+    }
+}
