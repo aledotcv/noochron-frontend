@@ -275,3 +275,60 @@ function closeModal() {
     const modal = document.getElementById('noteModal');
     modal.style.display = 'none';
 }
+
+document.getElementById('voiceInput').addEventListener('click', startVoiceRecognition);
+
+function startVoiceRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert('Tu navegador no soporta reconocimiento de voz. Intenta con Chrome o Edge.');
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-ES';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = false;
+
+    const voiceButton = document.getElementById('voiceInput');
+    voiceButton.style.backgroundColor = '#dc3545';
+    voiceButton.textContent = '⏺️';
+
+    try {
+        recognition.start();
+    } catch (error) {
+        alert('Error al iniciar el reconocimiento de voz. Asegurate de permitir el acceso al micrófono.');
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+        return;
+    }
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        const noteContentTextarea = document.getElementById('noteContent');
+        noteContentTextarea.value += (noteContentTextarea.value ? ' ' : '') + transcript;
+    };
+
+    recognition.onerror = (event) => {
+        let errorMessage = 'Error generico en el reconocimiento de voz';
+
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            errorMessage = 'Debes permitir el acceso al micrófono para usar esta función';
+        } else if (event.error === 'no-speech') {
+            errorMessage = 'No se detectó ninguna voz. Intenta de nuevo';
+        } else if (event.error === 'network') {
+            errorMessage = 'Error de conexión. Verifica tu conexión a internet, permisos del navegador o intenta con otro navegador';
+        }
+
+        alert(errorMessage);
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+    };
+
+    recognition.onend = () => {
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+    };
+}
