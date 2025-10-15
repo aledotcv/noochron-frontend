@@ -275,3 +275,165 @@ function closeModal() {
     const modal = document.getElementById('noteModal');
     modal.style.display = 'none';
 }
+
+document.getElementById('voiceInput').addEventListener('click', startVoiceRecognition);
+
+function startVoiceRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert('Tu navegador no soporta reconocimiento de voz. Intenta con Chrome o Edge.');
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-MX';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.continuous = false;
+
+    const voiceButton = document.getElementById('voiceInput');
+    voiceButton.style.backgroundColor = '#dc3545';
+    voiceButton.textContent = '⏺️';
+
+    try {
+        recognition.start();
+    } catch (error) {
+        alert('Error al iniciar el reconocimiento de voz. Asegurate de permitir el acceso al micrófono.');
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+        return;
+    }
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        const noteContentTextarea = document.getElementById('noteContent');
+        noteContentTextarea.value += (noteContentTextarea.value ? ' ' : '') + transcript;
+    };
+
+    recognition.onerror = (event) => {
+        let errorMessage = 'Error generico en el reconocimiento de voz';
+
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            errorMessage = 'Debes permitir el acceso al micrófono para usar esta función';
+        } else if (event.error === 'no-speech') {
+            errorMessage = 'No se detectó ninguna voz. Intenta de nuevo';
+        } else if (event.error === 'network') {
+            errorMessage = 'Error de conexión. Verifica tu conexión a internet, permisos del navegador o intenta con otro navegador';
+        }
+
+        alert(errorMessage);
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+    };
+
+    recognition.onend = () => {
+        voiceButton.style.backgroundColor = '#6c757d';
+        voiceButton.textContent = '🎤';
+    };
+}
+
+let currentSpeech = null;
+
+document.getElementById('textToSpeech').addEventListener('click', startTextToSpeech);
+
+function startTextToSpeech() {
+    if (!window.speechSynthesis) {
+        alert('Tu navegador no soporta TTS. Intenta con Chrome, Edge o Safari.');
+        return;
+    }
+
+    const noteContent = document.getElementById('noteContent').value;
+    const ttsButton = document.getElementById('textToSpeech');
+
+    if (!noteContent.trim()) {
+        alert('No hay contenido para reproducir en la nota');
+        return;
+    }
+
+    if (currentSpeech && speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        currentSpeech = null;
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        return;
+    }
+
+    currentSpeech = new SpeechSynthesisUtterance(noteContent);
+    currentSpeech.lang = 'es-MX';
+    currentSpeech.rate = 1.0;
+    currentSpeech.pitch = 1.0;
+    currentSpeech.volume = 1.0;
+
+    ttsButton.style.backgroundColor = '#ffc107';
+    ttsButton.textContent = '⏸️';
+
+    currentSpeech.onend = () => {
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        currentSpeech = null;
+    };
+
+    currentSpeech.onerror = (event) => {
+        if(event.error != 'interrupted')
+        alert('Error al reproducir el audio: ' + event.error);
+        ttsButton.style.backgroundColor = '#17a2b8';
+        ttsButton.textContent = '🔊';
+        currentSpeech = null;
+    };
+
+    speechSynthesis.speak(currentSpeech);
+}
+
+document.getElementById('summarizeNote').addEventListener('click', summarizeNote);
+
+async function summarizeNote() {
+    const noteContent = document.getElementById('noteContent').value;
+    const sessionId = localStorage.getItem('sessionId');
+    const userId = localStorage.getItem('userId');
+    const summarizeButton = document.getElementById('summarizeNote');
+
+    if (!noteContent.trim()) {
+        alert('No hay contenido para resumir en la nota');
+        return;
+    }
+
+    if (noteContent.length > 5000) {
+        alert('El contenido excede el limite de 5000 caracteres. Por favor, reduce el texto.');
+        return;
+    }
+
+    try {
+        summarizeButton.disabled = true;
+        summarizeButton.style.opacity = '0.5';
+        summarizeButton.style.backgroundColor = '#6c757d';
+        summarizeButton.textContent = '⏳';
+
+        const response = await fetch('https://enabled-elephant-presently.ngrok-free.app/summarize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                'x-session-id': sessionId,
+                'x-user-id': userId
+            },
+            body: JSON.stringify({ content: noteContent })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('noteContent').value = result.summary;
+        } else {
+            const errorText = await response.text();
+            alert(`Error al resumir la nota: ${errorText}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrio un error al resumir la nota.');
+    } finally {
+        summarizeButton.disabled = false;
+        summarizeButton.style.opacity = '1';
+        summarizeButton.style.backgroundColor = '#ffc107';
+        summarizeButton.textContent = '✨';
+    }
+}
