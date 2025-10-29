@@ -25,7 +25,15 @@ body {
 }
 
 body {
-    min-height: 100vh
+    min-height: 100vh;
+    font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
 }
 
 header {
@@ -282,6 +290,10 @@ h4,
 h5,
 h6 {
     color: var(--text) !important
+}
+
+.brand {
+    font-family: 'Merriweather', serif !important;
 }
 
 p,
