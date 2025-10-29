@@ -22,20 +22,20 @@
             <div class="col" style="margin-right: 0px;">
                 <nav class="navbar navbar-expand-md bg-dark py-3" data-bs-theme="dark" style="border-radius: 10px;">
                     <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><input
-                                type="search" placeholder="🔎 Busca tus notas"></a><button data-bs-toggle="collapse"
+                                type="search" placeholder="🔎 Busca tus notas" data-i18n-placeholder="navbar.placeholder"></a><button data-bs-toggle="collapse"
                             class="navbar-toggler" data-bs-target="#navcol-6"><span class="visually-hidden">Toggle
                                 navigation</span><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6">
                             <ul class="navbar-nav me-auto">
-                                <li class="nav-item"><a class="nav-link active" href="#">Por titulo</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#">Por contenido</a></li>
+                                <li class="nav-item"><a class="nav-link active" data-i18n="navbar.byTitle" href="#">Por titulo</a></li>
+                                <li class="nav-item"><a class="nav-link" data-i18n="navbar.byContent" href="#">Por contenido</a></li>
                             </ul>
                             <div class="d-md-none my-2"><button class="btn btn-light me-2"
-                                    type="button">Button</button><button class="btn btn-primary"
-                                    type="button">Button</button></div>
+                                    type="button" data-i18n="navbar.clear">Limpiar</button><button class="btn btn-primary"
+                                    type="button" data-i18n="navbar.search">Buscar</button></div>
                         </div>
-                        <div class="d-none d-md-block"><a class="btn btn-light me-2" role="button"
-                                href="#">Limpiar</a><a class="btn btn-primary" role="button" href="#">Buscar</a></div>
+                        <div class="d-none d-md-block"><a class="btn btn-light me-2" role="button" data-i18n="navbar.clear"
+                                href="#">Limpiar</a><a class="btn btn-primary" role="button" data-i18n="navbar.search" href="#">Buscar</a></div>
                     </div>
                 </nav>
                 <div class="container py-4 py-xl-5">
@@ -149,6 +149,7 @@
         </div>
     </header>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/i18n.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/auth.js"></script>

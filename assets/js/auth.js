@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    alert('Bienvenido a noochron');
                     window.location.href = 'index.html';
                 } else {
                     const errorText = await response.text();

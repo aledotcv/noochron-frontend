@@ -1,16 +1,23 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    if (!window.location.pathname.includes('view.html')) {
-        console.log("window.location.pathname", window.location.pathname);
+    const path = window.location.pathname;
+    const onView = path.includes('view.html');
+    const onApp = path.includes('app.html');
+    if (!onView && !onApp) {
         return;
     }
 
     const username = localStorage.getItem('username');
     if (username) {
-        document.getElementById('greeting').innerHTML = `<strong>Hola, ${username} 👋</strong>`;
+        const hi = (window.i18n && typeof i18n.t === 'function') ? i18n.t('greeting.hi') : 'Hola';
+        const greetingEl = document.getElementById('greeting');
+        if (greetingEl) greetingEl.innerHTML = `<strong>${hi}, ${username} 👋</strong>`;
     } else {
         window.location.href = 'index.html';
+        return;
     }
-    await getNotes();
+    if (onView) {
+        await getNotes();
+    }
 });
 
 async function getNotes() {
