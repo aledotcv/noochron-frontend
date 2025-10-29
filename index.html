@@ -11,10 +11,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/Features-Cards-icons.css">
     <link rel="stylesheet" href="assets/css/dark.css">
+        <link rel="stylesheet" href="assets/css/dark.css">
 </head>
 
 <body>
     <header>
+            <div class="position-absolute top-0 end-0 p-2" style="width: 200px;">
+                <label for="languageSelect" class="form-label" data-i18n="language.label">Idioma</label>
+                <select id="languageSelect" class="form-select form-select-sm" aria-label="Idioma">
+                    <option value="es" data-i18n="language.es">Español</option>
+                    <option value="en" data-i18n="language.en">Inglés</option>
+                </select>
+            </div>
         <h1 class="text-start"
             style="height: 100%;width: auto;padding-top: 18px;padding-left: 21px;">
             <strong class="brand">noochron</strong></h1>
@@ -24,38 +32,39 @@
                     style="position: relative;height: 100%;width: 91%;margin-left: auto;margin-top: 10px;margin-right: auto;border-radius: 19px;">
                     <div class="row" style="width: auto;">
                         <div class="col">
-                            <h1
-                                style="text-align: center;padding-top: 30px;font-weight: bold;padding-left: 17px;backdrop-filter: brightness(100%);-webkit-backdrop-filter: brightness(100%);">
-                                Inicia sesión</h1>
-                            <h3
-                                style="text-align: center;padding-top: 15px;padding-left: 0px;">
-                                Nombre de usuario</h3><input class="d-block" type="text" id="usernameField"
-                                style="margin-right: auto;margin-left: auto;padding-right: 0px;border-radius: 8px;"
-                                placeholder="Tu nombre de usuario">
+                                <h1 data-i18n="login.title"
+                                    style="text-align: center;padding-top: 30px;font-weight: bold;padding-left: 17px;backdrop-filter: brightness(100%);-webkit-backdrop-filter: brightness(100%);">
+                                    Inicia sesión</h1>
+                                <h3 data-i18n="login.usernameLabel"
+                                    style="text-align: center;padding-top: 15px;padding-left: 0px;">
+                                    Nombre de usuario</h3><input class="d-block" type="text" id="usernameField"
+                                    style="margin-right: auto;margin-left: auto;padding-right: 0px;border-radius: 8px;"
+                                    placeholder="Tu nombre de usuario" data-i18n-placeholder="login.usernamePlaceholder">
                         </div>
                     </div>
-                    <h3
-                        style="text-align: center;padding-top: 19px;padding-left: 0px;">
-                        Contraseña</h3><input class="d-block" type="password" id="passwordField"
+                        <h3 data-i18n="login.passwordLabel"
+                            style="text-align: center;padding-top: 19px;padding-left: 0px;">
+                            Contraseña</h3><input class="d-block" type="password" id="passwordField"
                         style="margin-left: auto;margin-right: auto;border-radius: 8px;margin-top: 5px;"
                         required="" minlength="8" placeholder="********"><button class="btn btn-primary btn-lg d-block"
-                        id="submitLogin" type="submit"
-                        style="margin-right: auto;margin-left: auto;margin-top: 26px;width: 285.5px;">Iniciar
-                        sesión</button>
-                    <h6
-                        style="text-align: center;padding-top: 30px;padding-left: 0px;text-decoration: underline;display: none;">
-                        Olvide la contraseña</h6>
-                    <h6
-                        style="text-align: center;padding-top: 188px;padding-left: 0px;">
-                        ¿No tienes una cuenta?</h6>
-                    <h6 id="signupLabel"
-                        style="text-align: center;padding-top: -4px;padding-left: 0px;text-decoration:  underline;">
-                        Registrate</h6>
+                            id="submitLogin" type="submit" data-i18n="login.submit"
+                            style="margin-right: auto;margin-left: auto;margin-top: 26px;width: 285.5px;">Iniciar
+                            sesión</button>
+                        <h6 data-i18n="login.forgot"
+                            style="text-align: center;padding-top: 30px;padding-left: 0px;text-decoration: underline;display: none;">
+                            Olvidé la contraseña</h6>
+                        <h6 data-i18n="login.noAccount"
+                            style="text-align: center;padding-top: 188px;padding-left: 0px;">
+                            ¿No tienes una cuenta?</h6>
+                        <h6 id="signupLabel" data-i18n="login.signup"
+                            style="text-align: center;padding-top: -4px;padding-left: 0px;text-decoration:  underline;">
+                            Regístrate</h6>
                 </div>
             </div>
         </div>
     </header>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/js/i18n.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/auth.js"></script>
