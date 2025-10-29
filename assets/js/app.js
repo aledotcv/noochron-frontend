@@ -245,7 +245,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 document.getElementById('addReminder').addEventListener('click', () => {
     const title = document.getElementById('noteTitle').value;
    // const content = document.getElementById('noteContent').value;
-   const content = "Recordatorio para tu nota de inMind."; 
+   const content = "Recordatorio para tu nota de noochron."; 
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1);
