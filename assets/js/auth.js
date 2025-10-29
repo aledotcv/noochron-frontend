@@ -100,13 +100,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (signupLabel) {
         signupLabel.addEventListener('click', () => {
-            window.location.href = 'https://noochron.aledotcv.com/registrar.html';
+            window.location.href = 'registrar.html';
         });
     }
 
     if (logInLabel) {
         logInLabel.addEventListener('click', () => {
-            window.location.href = 'https://noochron.aledotcv.com/';
+            window.location.href = '../';
         });
     }
 });

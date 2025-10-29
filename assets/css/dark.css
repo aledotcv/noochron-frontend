@@ -1,0 +1,315 @@
+:root {
+    --bg: #0e1116;
+    --bg-elev: #151a21;
+    --bg-elev-2: #1b212b;
+    --border: #2a2f37;
+    --text: #e6eaf2;
+    --muted: #a9b1bd;
+    --primary: #4f8cff;
+    --primary-600: #4077e0;
+    --link: #8ab4f8;
+    --success: #2fbf71;
+    --warning: #f5a623;
+    --danger: #ff5c5c;
+    --info: #4ec8e3;
+    --input-bg: #0f141b;
+    --input-border: #30363d;
+    --placeholder: #8a93a2
+}
+
+html,
+body {
+    background: var(--bg) !important;
+    background-image: none !important;
+    color: var(--text) !important
+}
+
+body {
+    min-height: 100vh
+}
+
+header {
+    background: linear-gradient(180deg, #0e1116 0%, #151a21 100%) !important;
+    color: var(--text) !important
+}
+
+* {
+    border-color: var(--border)
+}
+
+a {
+    color: var(--link)
+}
+
+a:hover {
+    color: var(--primary)
+}
+
+.btn {
+    border: 1px solid var(--border) !important
+}
+
+.btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #0b0f14 !important
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--primary-600) !important;
+    border-color: var(--primary-600) !important
+}
+
+.btn-light {
+    background-color: #2a2f37 !important;
+    border-color: #2a2f37 !important;
+    color: var(--text) !important
+}
+
+.btn-light:hover {
+    background-color: #363c46 !important
+}
+
+.btn-secondary {
+    background-color: #3a4150 !important;
+    border-color: #3a4150 !important;
+    color: var(--text) !important
+}
+
+.btn-outline-secondary {
+    border-color: #3a4150 !important;
+    color: var(--text) !important
+}
+
+.btn-danger {
+    background-color: var(--danger) !important;
+    border-color: var(--danger) !important;
+    color: #0b0f14 !important
+}
+
+.btn-success {
+    background-color: var(--success) !important;
+    border-color: var(--success) !important;
+    color: #0b0f14 !important
+}
+
+.btn-warning {
+    background-color: var(--warning) !important;
+    border-color: var(--warning) !important;
+    color: #0b0f14 !important
+}
+
+.navbar,
+.navbar-dark,
+.navbar-light {
+    background-color: var(--bg-elev) !important;
+    border-bottom: 1px solid var(--border) !important
+}
+
+.navbar .nav-link {
+    color: var(--muted) !important
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:focus,
+.navbar .nav-link:hover {
+    color: var(--text) !important
+}
+
+.card {
+    background-color: var(--bg-elev) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important
+}
+
+.card .text-muted {
+    color: var(--muted) !important
+}
+
+.badge {
+    background-color: #2a2f37 !important;
+    color: var(--text) !important
+}
+
+.form-control,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="search"],
+textarea,
+select {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text) !important
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--placeholder) !important;
+    opacity: 1
+}
+
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    background-color: var(--input-bg) !important;
+    color: var(--text) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 .2rem rgba(79, 140, 255, .25) !important
+}
+
+.dropdown-menu {
+    background-color: var(--bg-elev) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important
+}
+
+.dropdown-item {
+    color: var(--text) !important
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #1f2630 !important
+}
+
+.table {
+    color: var(--text) !important
+}
+
+.table thead th {
+    background-color: var(--bg-elev-2) !important;
+    color: var(--text) !important
+}
+
+.table tbody tr {
+    background-color: var(--bg-elev) !important
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #161b23 !important
+}
+
+.list-group-item {
+    background-color: var(--bg-elev) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important
+}
+
+.modal-content {
+    background-color: var(--bg-elev-2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important
+}
+
+.alert {
+    background-color: #1f2630 !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important
+}
+
+input[type="search"] {
+    color: var(--text) !important
+}
+
+hr {
+    border-top: 1px solid var(--border) !important
+}
+
+#noteModal {
+    background-color: var(--bg-elev-2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .6) !important
+}
+
+#noteModal input,
+#noteModal textarea {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text) !important
+}
+
+#noteModal input::placeholder,
+#noteModal textarea::placeholder {
+    color: var(--placeholder) !important
+}
+
+#saveNote {
+    background-color: var(--primary) !important;
+    color: #0b0f14 !important
+}
+
+#deleteNote {
+    background-color: var(--danger) !important;
+    color: #0b0f14 !important
+}
+
+#addReminder {
+    background-color: var(--success) !important;
+    color: #0b0f14 !important
+}
+
+#voiceInput {
+    background-color: #6c757d !important;
+    color: var(--text) !important
+}
+
+#textToSpeech {
+    background-color: var(--info) !important;
+    color: #0b0f14 !important
+}
+
+#summarizeNote {
+    background-color: var(--warning) !important;
+    color: #0b0f14 !important
+}
+
+#createNote {
+    background-color: var(--primary) !important;
+    color: #0b0f14 !important;
+    box-shadow: 0 6px 20px rgba(79, 140, 255, .35) !important
+}
+
+header h1,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--text) !important
+}
+
+p,
+label,
+span,
+small,
+li {
+    color: var(--muted)
+}
+
+.tag,
+.pill {
+    background-color: #2a2f37 !important;
+    color: var(--text) !important;
+    border-radius: 999px;
+    padding: .25rem .5rem
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a2f37;
+    border-radius: 8px
+}
+
+::-webkit-scrollbar-track {
+    background: #0e1116
+}
