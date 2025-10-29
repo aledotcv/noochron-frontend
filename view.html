@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en" data-bss-forced-theme="light"
-    style="background:linear-gradient(90deg, #160230, #03053b 98%);">
+<html data-bs-theme="dark" lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -9,12 +8,13 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+2&amp;display=swap">
     <link rel="stylesheet" href="assets/css/Features-Cards-icons.css">
+    <link rel="stylesheet" href="assets/css/dark.css">
 </head>
 
-<body style="background:var(--bs-dark-text-emphasis);width:auto;">
-    <header style="background:linear-gradient(-68deg, #1d0091, #004554), #ff0000;height:74px;">
+<body>
+    <header>
         <h1 class="text-start" id="greeting"
-            style="height:100%;width:auto;padding-top:18px;padding-left:21px;font-family:'Baloo 2', serif;color:rgb(255,255,255);">
+            style="height:100%;width:auto;padding-top:18px;padding-left:21px;font-family:'Baloo 2', serif;">
             <strong>Hola, Iván 👋</strong></h1>
         <div class="row" style="height:611px;width:auto;margin-left:0px;padding-left:0px;margin-right:0px;">
             <div class="col" style="margin-right:0px;">
@@ -48,9 +48,9 @@
             </div>
         </div>
     </header><button id="createNote"
-        style="position:fixed;bottom:20px;right:20px;background-color:#007bff;color:white;border:none;border-radius:50%;width:60px;height:60px;font-size:30px;cursor:pointer;">+</button>
+    style="position:fixed;bottom:20px;right:20px;border:none;border-radius:50%;width:60px;height:60px;font-size:30px;cursor:pointer;">+</button>
     <div id="noteModal"
-        style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);background-color:white;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0, 0, 0, 0.5);width:80%;max-width:600px;">
+    style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);padding:20px;border-radius:10px;width:80%;max-width:600px;">
         <div style="display:flex;justify-content:space-between;align-items:center;"><input type="text" id="noteTitle"
                 placeholder="Titulo" style="width:80%;font-size:1.5em;padding:5px;margin-bottom:10px;"><button
                 id="closeModalView"
@@ -60,19 +60,19 @@
                 style="width:100%;height:150px;padding:10px;margin-bottom:10px;"></textarea></div>
         <div><label for="noteTags">Etiquetas:</label><input type="text" id="noteTags"
                 style="width:100%;padding:5px;margin-bottom:10px;"></div>
-        <div style="display:flex;justify-content:space-between;"><button id="saveNote"
-                style="background-color:#007bff;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Guardar</button><button
-                id="deleteNote"
-                style="background-color:#dc3545;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Eliminar</button><button
-                id="addReminder"
-                style="background-color:#28a745;color:white;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Añadir
-                Recordatorio</button><button
-                id="voiceInput"
-                style="background-color:#6c757d;color:white;border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🎤</button><button
-                id="textToSpeech"
-                style="background-color:#17a2b8;color:white;border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🔊</button><button
-                id="summarizeNote"
-                style="background-color:#ffc107;color:white;border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">✨</button></div>
+    <div style="display:flex;justify-content:space-between;"><button id="saveNote"
+        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Guardar</button><button
+        id="deleteNote"
+        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Eliminar</button><button
+        id="addReminder"
+        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Añadir
+        Recordatorio</button><button
+        id="voiceInput"
+        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🎤</button><button
+        id="textToSpeech"
+        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🔊</button><button
+        id="summarizeNote"
+        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">✨</button></div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
