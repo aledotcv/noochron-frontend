@@ -4,8 +4,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordField = document.getElementById('passwordField');
     const submitRegisterButton = document.getElementById('submitRegister');
     const emailField = document.getElementById('emailField');
+    const emailError = document.getElementById('emailError');
     const signupLabel = document.getElementById('signupLabel');
     const logInLabel = document.getElementById('logInLabel');
+
+    function validateEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        return emailRegex.test(email);
+    }
+
+    function showEmailError(message) {
+        if (emailError) {
+            emailError.textContent = message;
+            emailError.style.display = 'block';
+        }
+        if (emailField) {
+            emailField.style.borderColor = '#ff4757';
+            emailField.style.boxShadow = '0 0 0 3px rgba(255, 71, 87, 0.15)';
+        }
+    }
+
+    function clearEmailError() {
+        if (emailError) {
+            emailError.style.display = 'none';
+        }
+        if (emailField) {
+            emailField.style.borderColor = '';
+            emailField.style.boxShadow = '';
+        }
+    }
+
+    if (emailField) {
+        emailField.addEventListener('input', () => {
+            const email = emailField.value.trim();
+            if (email.length === 0) {
+                clearEmailError();
+            } else if (!validateEmail(email)) {
+                showEmailError('Por favor ingresa un correo electrónico válido');
+            } else {
+                clearEmailError();
+            }
+        });
+
+        emailField.addEventListener('blur', () => {
+            const email = emailField.value.trim();
+            if (email.length > 0 && !validateEmail(email)) {
+                showEmailError('Por favor ingresa un correo electrónico válido');
+            }
+        });
+    }
 
     if (submitLoginButton && usernameField && passwordField) {
         submitLoginButton.addEventListener('click', async () => {
@@ -54,13 +101,20 @@ document.addEventListener('DOMContentLoaded', () => {
         submitRegisterButton.addEventListener('click', async () => {
             const username = usernameField.value;
             const password = passwordField.value;
-            const email = emailField.value;
+            const email = emailField.value.trim();
             const pin = '000000'; 
 
             if (!email || !password || !username || !pin) {
                 alert('Los campos no pueden estar vacios');
                 return;
             }
+
+            if (!validateEmail(email)) {
+                showEmailError('Por favor ingresa un correo electrónico válido antes de continuar');
+                emailField.focus();
+                return;
+            }
+
             if (username.length > 24) {
                 alert('El nombre de usuario no puede ser mayor a 24 caracteres');
                 return;

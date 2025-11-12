@@ -82,6 +82,7 @@ function getNoteDate(note) {
     return parseFlexibleDate(dateStr);
 }
 
+function populateNotes(notes) {
     const oldestCol = document.getElementById('col-oldest');
     const newestCol = document.getElementById('col-newest');
     if (!oldestCol || !newestCol) {
@@ -101,8 +102,8 @@ function getNoteDate(note) {
     const normalized = notes.map(n => ({ ...n, _date: getNoteDate(n) }))
         .sort((a, b) => a._date - b._date); 
 
-    const oldestOrdered = normalized;
     const newestOrdered = [...normalized].reverse();
+    const oldestOrdered = normalized;
 
     function renderIntoColumn(list, columnEl) {
         list.forEach(note => {
@@ -134,8 +135,8 @@ function getNoteDate(note) {
         });
     }
 
-    renderIntoColumn(oldestOrdered, oldestCol);
-    renderIntoColumn(newestOrdered, newestCol);
+    renderIntoColumn(newestOrdered, oldestCol);
+    renderIntoColumn(oldestOrdered, newestCol);
 }
 
 const style = document.createElement('style');
