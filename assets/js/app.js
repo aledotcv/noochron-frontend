@@ -57,38 +57,85 @@ function truncateStr(string, length){
         return string;
     }
 }
-function populateNotes(notes) {
-    const notesContainer = document.querySelector('.container .row');
-    notesContainer.innerHTML = '';
+function parseFlexibleDate(dateStr) {
+    if (!dateStr) return new Date(0);
+    if (typeof dateStr === 'number') return new Date(dateStr);
+    if (/^\d{10,13}$/.test(String(dateStr))) {
+        const n = Number(dateStr);
+        return new Date(n < 1e12 ? n * 1000 : n);
+    }
+    const mdy = /^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*$/;
+    const mdyMatch = String(dateStr).match(mdy);
+    if (mdyMatch) {
+        const m = parseInt(mdyMatch[1], 10);
+        const d = parseInt(mdyMatch[2], 10);
+        const y = parseInt(mdyMatch[3], 10);
+        return new Date(y, m - 1, d);
+    }
+    const parsed = new Date(dateStr);
+    if (!isNaN(parsed.getTime())) return parsed;
+    return new Date(0);
+}
 
-    if (notes.length === 0) {
-        notesContainer.innerHTML = '<p>No has creado notas.</p>';
+function getNoteDate(note) {
+    const dateStr = note.noteEditDate || note.noteCreationDate;
+    return parseFlexibleDate(dateStr);
+}
+
+    const oldestCol = document.getElementById('col-oldest');
+    const newestCol = document.getElementById('col-newest');
+    if (!oldestCol || !newestCol) {
+        console.warn('Column containers not found, aborting populateNotes.');
+        return;
+    }
+    oldestCol.innerHTML = '';
+    newestCol.innerHTML = '';
+
+    if (!Array.isArray(notes) || notes.length === 0) {
+        const emptyMsg = '<p class="empty-notes-msg">No has creado notas.</p>';
+        oldestCol.innerHTML = emptyMsg;
+        newestCol.innerHTML = emptyMsg;
         return;
     }
 
+    const normalized = notes.map(n => ({ ...n, _date: getNoteDate(n) }))
+        .sort((a, b) => a._date - b._date); 
 
-    notes.forEach(note => {
-        const noteElement = document.createElement('div');
-        noteElement.className = 'col';
+    const oldestOrdered = normalized;
+    const newestOrdered = [...normalized].reverse();
 
-        noteElement.innerHTML = `
-            <div class="card" data-note-id="${note.noteId}" style="animation: bounceIn 1.1s;">
-                <div class="card-body p-4">
-                    <div class="row">
-                        <div class="col">
-                            <h4>${note.title}</h4>
-                            <p>${truncateStr(note.content, 30)}</p>
-                        </div>
-                        <div class="col">
-                            ${note.tags.split(',').map(tag => `<p style="width: 146px;background: #3e68ff;border-radius: 11px;color: var(--bs-body-bg);text-align: center;">${tag}</p>`).join('')}
+    function renderIntoColumn(list, columnEl) {
+        list.forEach(note => {
+            const cardWrapper = document.createElement('div');
+            cardWrapper.innerHTML = `
+                <div class="card" data-note-id="${note.noteId}" style="animation: bounceIn 0.8s;">
+                    <div class="card-body p-3">
+                        <div class="d-flex flex-column gap-1">
+                            <div>
+                                <h5 style="margin:0;">${note.title}</h5>
+                                <p style="margin:0;font-size:.8rem;opacity:.7;">${note._date.toLocaleDateString('es-MX')}</p>
+                            </div>
+                            <p style="margin:0;font-size:.85rem;">${truncateStr(note.content, 60)}</p>
+                            <div class="note-tags-wrapper d-flex flex-wrap gap-1">
+                                ${String(note.tags || '')
+                                    .split(',')
+                                    .map(t => t.trim())
+                                    .filter(Boolean)
+                                    .map(tag => `<p>${tag}</p>`)
+                                    .join('')}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-        noteElement.querySelector('.card').addEventListener('click', () => openNoteModal(note));
-        notesContainer.appendChild(noteElement);
-    });
+            `;
+            const card = cardWrapper.querySelector('.card');
+            card.addEventListener('click', () => openNoteModal(note));
+            columnEl.appendChild(cardWrapper.firstElementChild);
+        });
+    }
+
+    renderIntoColumn(oldestOrdered, oldestCol);
+    renderIntoColumn(newestOrdered, newestCol);
 }
 
 const style = document.createElement('style');
