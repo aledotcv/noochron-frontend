@@ -12,13 +12,18 @@
     <link rel="stylesheet" href="assets/css/Features-Cards-icons.css">
     <link rel="stylesheet" href="assets/css/dark.css">
     <link rel="stylesheet" href="assets/css/notes-layout.css">
+    <link rel="stylesheet" href="assets/css/note-modal.css">
+    <link rel="stylesheet" href="assets/css/brand.css">
 </head>
 
 <body>
     <header>
-        <h1 class="text-start" id="greeting"
-            style="height:100%;width:auto;padding-top:18px;padding-left:21px;">
-            <strong>Hola, Iván 👋</strong></h1>
+        <div class="view-header-top">
+            <img src="brand.png" alt="Noochron" class="brand-logo">
+            <h1 class="text-start" id="greeting">
+                <strong>Hola, Iván 👋</strong>
+            </h1>
+        </div>
         <div class="row" style="height:611px;width:auto;margin-left:0px;padding-left:0px;margin-right:0px;">
             <div class="col" style="margin-right:0px;">
                 <nav class="navbar navbar-expand-md bg-dark py-3" data-bs-theme="dark" style="border-radius:10px;">
@@ -53,32 +58,40 @@
                 </div>
             </div>
         </div>
-    </header><button id="createNote"
-    style="position:fixed;bottom:20px;right:20px;border:none;border-radius:50%;width:60px;height:60px;font-size:30px;cursor:pointer;">+</button>
-    <div id="noteModal"
-    style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);padding:20px;border-radius:10px;width:80%;max-width:600px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;"><input type="text" id="noteTitle"
-        placeholder="Titulo" data-i18n-placeholder="modal.titlePlaceholder" style="width:80%;font-size:1.5em;padding:5px;margin-bottom:10px;"><button
-                id="closeModalView"
-                style="/*display: none;*/background: none;border: none;font-size: 1.5em;cursor: pointer;">×</button>
-        </div><input type="hidden" id="noteId">
-    <div><label for="noteContent" data-i18n="modal.contentLabel">Contenido:</label><textarea id="noteContent"
-                style="width:100%;height:150px;padding:10px;margin-bottom:10px;"></textarea></div>
-    <div><label for="noteTags" data-i18n="modal.tagsLabel">Etiquetas:</label><input type="text" id="noteTags"
-        style="width:100%;padding:5px;margin-bottom:10px;" data-i18n-placeholder="modal.tagsPlaceholder"></div>
-    <div style="display:flex;justify-content:space-between;"><button id="saveNote" data-i18n="modal.save"
-        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Guardar</button><button
-        id="deleteNote" data-i18n="modal.delete"
-        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Eliminar</button><button
-        id="addReminder" data-i18n="modal.addReminder"
-        style="border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">Añadir
-        Recordatorio</button><button
-        id="voiceInput"
-        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🎤</button><button
-        id="textToSpeech"
-        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">🔊</button><button
-        id="summarizeNote"
-        style="border:none;padding:10px 15px;border-radius:5px;cursor:pointer;font-size:1.2em;">✨</button></div>
+    </header>
+    <button id="createNote" class="create-note-fab">+</button>
+    
+    <div id="noteModal" class="note-modal">
+        <div class="note-modal-container">
+            <div class="note-modal-header">
+                <input type="text" id="noteTitle" class="note-title-input" placeholder="Titulo" data-i18n-placeholder="modal.titlePlaceholder">
+                <button id="closeModalView" class="note-close-btn">×</button>
+            </div>
+            <input type="hidden" id="noteId">
+            
+            <div class="note-form-section">
+                <label for="noteContent" class="note-label" data-i18n="modal.contentLabel">Contenido</label>
+                <textarea id="noteContent" class="note-content-input" placeholder="Escribe aqui..."></textarea>
+            </div>
+            
+            <div class="note-form-section">
+                <label for="noteTags" class="note-label" data-i18n="modal.tagsLabel">Etiquetas</label>
+                <input type="text" id="noteTags" class="note-tags-input" placeholder="Separa con comas" data-i18n-placeholder="modal.tagsPlaceholder">
+            </div>
+            
+            <div class="note-actions">
+                <div class="note-actions-primary">
+                    <button id="saveNote" class="note-btn note-btn-save" data-i18n="modal.save">Guardar</button>
+                    <button id="deleteNote" class="note-btn note-btn-delete" data-i18n="modal.delete">Eliminar</button>
+                    <button id="addReminder" class="note-btn note-btn-reminder" data-i18n="modal.addReminder">Añadir Recordatorio</button>
+                </div>
+                <div class="note-actions-secondary">
+                    <button id="voiceInput" class="note-btn-icon" title="Entrada de voz">🎤</button>
+                    <button id="textToSpeech" class="note-btn-icon" title="Leer nota">🔊</button>
+                    <button id="summarizeNote" class="note-btn-icon" title="Resumir con IA">✨</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/i18n.js"></script>

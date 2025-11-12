@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="assets/css/animate.min.css">
     <link rel="stylesheet" href="assets/css/Features-Cards-icons.css">
     <link rel="stylesheet" href="assets/css/dark.css">
+    <link rel="stylesheet" href="assets/css/brand.css">
 </head>
 
 <body>
@@ -25,7 +26,7 @@
         </div>
         <h1 class="text-start"
             style="height: 100%;width: auto;padding-top: 18px;padding-left: 21px;">
-            <strong class="brand">noochron</strong></h1>
+            <img src="brand.png" alt="Noochron" class="brand-logo"></h1>
         <div class="row" style="height: 611px;width: auto;margin-left: 0px;padding-left: 0px;margin-right: 0px;">
             <div class="col" style="margin-right: 0px;">
                 <div class="text-start"
@@ -50,9 +51,12 @@
                         required="" minlength="8" placeholder="********">
                     <h3 data-i18n="register.emailLabel"
                         style="text-align: center;padding-top: 19px;padding-left: 0px;">
-                        ¿Cuál es tu correo electrónico?</h3><input class="d-block" type="text" id="emailField"
+                        ¿Cuál es tu correo electrónico?</h3>
+                    <input class="d-block" type="email" id="emailField"
                         style="margin-right: auto;margin-left: auto;padding-right: 0px;border-radius: 8px;"
-                        placeholder="Tu correo electrónico"><button class="btn btn-primary btn-lg d-block"
+                        placeholder="Tu correo electrónico">
+                    <small id="emailError" class="email-error-msg" style="display:none;color:#ff4757;text-align:center;display:block;margin-top:4px;font-size:0.85rem;"></small>
+                    <button class="btn btn-primary btn-lg d-block"
                         id="submitRegister" type="submit" data-i18n="register.submit"
                         style="margin-right: auto;margin-left: auto;margin-top: 26px;width: 285.5px;">Regístrate</button>
                     <h6 data-i18n="register.haveAccount"
