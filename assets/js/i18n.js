@@ -5,7 +5,7 @@
       language:{label:"Idioma",es:"Español",en:"Inglés"},
       greeting:{hi:"Hola"},
       login:{
-        title:"Inicia sesión",
+        title:"Inicia sesión en Noochron",
         usernameLabel:"Nombre de usuario",
         usernamePlaceholder:"Tu nombre de usuario",
         passwordLabel:"Contraseña",
@@ -15,10 +15,11 @@
         signup:"Regístrate"
       },
       register:{
-        title:"Crea una cuenta",
+        title:"Crea una cuenta en Noochron",
         usernameLabel:"¿Cuál será tu nombre de usuario?",
         passwordLabel:"Crea una contraseña",
         emailLabel:"¿Cuál es tu correo electrónico?",
+        emailPlaceholder:"Tu correo electrónico",
         submit:"Regístrate",
         haveAccount:"¿Ya tienes una cuenta?",
         login:"Inicia sesión"
@@ -31,6 +32,11 @@
         clear:"Limpiar",
         search:"Buscar"
       },
+      sort:{
+        title:"Ordenar notas",
+        newest:"Más recientes",
+        oldest:"Más antiguas"
+      },
       modal:{
         titlePlaceholder:"Título",
         contentLabel:"Contenido:",
@@ -38,7 +44,8 @@
         tagsPlaceholder:"Etiquetas",
         save:"Guardar",
         delete:"Eliminar",
-        addReminder:"Añadir Recordatorio"
+        addReminder:"Añadir Recordatorio",
+        confirmClose:"¿Deseas cerrar sin guardar los cambios?"
       }
     },
     en:{
@@ -46,7 +53,7 @@
       language:{label:"Language",es:"Spanish",en:"English"},
       greeting:{hi:"Hey"},
       login:{
-        title:"Sign in",
+        title:"Sign in on Noochron",
         usernameLabel:"Username",
         usernamePlaceholder:"Your username",
         passwordLabel:"Password",
@@ -56,10 +63,11 @@
         signup:"Sign up"
       },
       register:{
-        title:"Create an account",
+        title:"Create a Noochron account",
         usernameLabel:"What will be your username?",
         passwordLabel:"Create a password",
         emailLabel:"What is your email?",
+        emailPlaceholder:"Your email",
         submit:"Sign up",
         haveAccount:"Already have an account?",
         login:"Log in"
@@ -72,6 +80,11 @@
         clear:"Clear",
         search:"Search"
       },
+      sort:{
+        title:"Sort notes",
+        newest:"Newest",
+        oldest:"Oldest"
+      },
       modal:{
         titlePlaceholder:"Title",
         contentLabel:"Content:",
@@ -79,7 +92,8 @@
         tagsPlaceholder:"Tags",
         save:"Save",
         delete:"Delete",
-        addReminder:"Add reminder"
+        addReminder:"Add reminder",
+        confirmClose:"Do you want to close without saving changes?"
       }
     }
   };

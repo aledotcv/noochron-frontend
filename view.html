@@ -19,16 +19,15 @@
 <body>
     <header>
         <div class="view-header-top">
-            <img src="brand.png" alt="Noochron" class="brand-logo">
             <h1 class="text-start" id="greeting">
                 <strong>Hola, Iván 👋</strong>
             </h1>
         </div>
-        <div class="row" style="height:611px;width:auto;margin-left:0px;padding-left:0px;margin-right:0px;">
+        <div class="row" style="width:auto;margin-left:0px;padding-left:0px;margin-right:0px;">
             <div class="col" style="margin-right:0px;">
                 <nav class="navbar navbar-expand-md bg-dark py-3" data-bs-theme="dark" style="border-radius:10px;">
             <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><input
-                type="search" id="searchInput" placeholder="🔎 Busca tus notas" data-i18n-placeholder="navbar.placeholder"></a><button
+                type="search" id="searchInput" style="border-radius:10px;" placeholder="🔎 Busca tus notas" data-i18n-placeholder="navbar.placeholder"></a><button
                             data-bs-toggle="collapse" data-bs-target="#navcol-6" class="navbar-toggler"><span
                                 class="visually-hidden">Toggle navigation</span><span
                                 class="navbar-toggler-icon"></span></button>
@@ -41,24 +40,33 @@
                 <li class="nav-item"><a class="nav-link" data-search-type="tags" data-i18n="navbar.byTags" href="#">Por
                     etiquetas</a></li>
                             </ul>
-                <div class="d-md-none my-2"><button class="btn btn-light me-2" id="clearButton" data-i18n="navbar.clear"
-                    type="button">Limpiar</button><button class="btn btn-primary" id="searchButton" data-i18n="navbar.search"
+                <div class="d-md-none my-2"><button class="btn btn-light me-2" id="clearButtonMobile" data-i18n="navbar.clear"
+                    type="button">Limpiar</button><button class="btn btn-light me-2" id="sortButtonMobile" aria-label="Ordenar notas">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3 2l4 4-4 4V2zm10 12l-4-4 4-4v8z"/>
+                        </svg>
+                    </button><button class="btn btn-primary" id="searchButtonMobile" data-i18n="navbar.search"
                     type="button">Buscar</button></div>
                         </div>
             <div class="d-none d-md-block"><button class="btn btn-light me-2" id="clearButton" data-i18n="navbar.clear"
-                type="button">Limpiar</button><button class="btn btn-primary" id="searchButton" data-i18n="navbar.search"
+                type="button">Limpiar</button><button class="btn btn-light me-2" id="sortButton" aria-label="Ordenar notas">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M3 2l4 4-4 4V2zm10 12l-4-4 4-4v8z"/>
+                    </svg>
+                </button><button class="btn btn-primary" id="searchButton" data-i18n="navbar.search"
                 type="button">Buscar</button></div>
                     </div>
                 </nav>
-                <div class="container py-4 py-xl-5">
-                    <div id="notesBoard" aria-label="Tablero de notas con dos columnas">
-                        <div class="notes-column" id="col-oldest" aria-label="Notas más antiguas"></div>
-                        <div class="notes-column" id="col-newest" aria-label="Notas más nuevas"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </header>
+    
+    <main class="notes-main-container">
+        <div id="notesBoard" aria-label="Tablero de notas">
+            <div class="notes-column" id="col-main" aria-label="Tus notas"></div>
+        </div>
+    </main>
+    
     <button id="createNote" class="create-note-fab">+</button>
     
     <div id="noteModal" class="note-modal">
@@ -93,6 +101,34 @@
             </div>
         </div>
     </div>
+    
+    <div id="sortModal" class="note-modal">
+        <div class="note-modal-container sort-modal-container">
+            <div class="sort-modal-header">
+                <h4 data-i18n="sort.title">Ordenar notas</h4>
+                <button class="sort-modal-close" id="closeSortModal">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="sort-modal-content">
+                <button class="sort-option-btn" id="sortNewestBtn">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                        <path d="M7.5 3.5a.5.5 0 0 1 .5.5v8.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 12.793V4a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    <span data-i18n="sort.newest">Más recientes</span>
+                </button>
+                <button class="sort-option-btn" id="sortOldestBtn">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+                        <path d="M7.5 12.5a.5.5 0 0 0 .5-.5V3.207l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.207V12a.5.5 0 0 0 .5.5z"/>
+                    </svg>
+                    <span data-i18n="sort.oldest">Más antiguas</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/i18n.js"></script>
     <script src="assets/js/bs-init.js"></script>
