@@ -524,6 +524,7 @@ function startVoiceRecognition() {
 }
 
 let currentSpeech = null;
+let isTypewriterActive = false;
 
 document.getElementById('textToSpeech').addEventListener('click', startTextToSpeech);
 
@@ -575,9 +576,55 @@ function startTextToSpeech() {
     speechSynthesis.speak(currentSpeech);
 }
 
+function setModalInteractionState(disabled) {
+    const noteTitle = document.getElementById('noteTitle');
+    const noteContent = document.getElementById('noteContent');
+    const noteTags = document.getElementById('noteTags');
+    const saveButton = document.getElementById('saveNote');
+    const deleteButton = document.getElementById('deleteNote');
+    const closeButton = document.getElementById('closeModalView');
+    const voiceButton = document.getElementById('voiceInput');
+    const ttsButton = document.getElementById('textToSpeech');
+    const summarizeButton = document.getElementById('summarizeNote');
+    const reminderButton = document.getElementById('addReminder');
+
+    if (noteTitle) noteTitle.readOnly = disabled;
+    if (noteContent) noteContent.readOnly = disabled;
+    if (noteTags) noteTags.readOnly = disabled;
+    if (saveButton) saveButton.disabled = disabled;
+    if (deleteButton) deleteButton.disabled = disabled;
+    if (closeButton) closeButton.disabled = disabled;
+    if (voiceButton) voiceButton.disabled = disabled;
+    if (ttsButton) ttsButton.disabled = disabled;
+    if (summarizeButton) summarizeButton.disabled = disabled;
+    if (reminderButton) reminderButton.disabled = disabled;
+}
+
+function typewriterEffect(element, text, speed = 5) {
+    return new Promise((resolve) => {
+        element.value = '';
+        let index = 0;
+        
+        const timer = setInterval(() => {
+            if (index < text.length) {
+                element.value += text.charAt(index);
+                element.scrollTop = element.scrollHeight;
+                index++;
+            } else {
+                clearInterval(timer);
+                resolve();
+            }
+        }, speed);
+    });
+}
+
 document.getElementById('summarizeNote').addEventListener('click', summarizeNote);
 
 async function summarizeNote() {
+    if (isTypewriterActive) {
+        return;
+    }
+
     const noteContent = document.getElementById('noteContent').value;
     const sessionId = localStorage.getItem('sessionId');
     const userId = localStorage.getItem('userId');
@@ -594,7 +641,7 @@ async function summarizeNote() {
     }
 
     try {
-        summarizeButton.disabled = true;
+        setModalInteractionState(true);
         summarizeButton.style.opacity = '0.5';
         summarizeButton.style.backgroundColor = '#6c757d';
         summarizeButton.textContent = '⏳';
@@ -612,7 +659,11 @@ async function summarizeNote() {
 
         if (response.ok) {
             const result = await response.json();
-            document.getElementById('noteContent').value = result.summary;
+            const noteContentElement = document.getElementById('noteContent');
+            
+            isTypewriterActive = true;
+            await typewriterEffect(noteContentElement, result.summary);
+            isTypewriterActive = false;
         } else {
             const errorText = await response.text();
             alert(`Error al resumir la nota: ${errorText}`);
@@ -621,7 +672,7 @@ async function summarizeNote() {
         console.error('Error:', error);
         alert('Ocurrio un error al resumir la nota.');
     } finally {
-        summarizeButton.disabled = false;
+        setModalInteractionState(false);
         summarizeButton.style.opacity = '1';
         summarizeButton.style.backgroundColor = '#ffc107';
         summarizeButton.textContent = '✨';
