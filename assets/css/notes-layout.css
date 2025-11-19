@@ -1,62 +1,85 @@
-/* Layout de tablero de notas en tres columnas */
-#notesBoard {
+.notes-main-container {
   display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 60vh;
+  flex-direction: column;
+  background: transparent;
+  overflow: hidden;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+#notesBoard {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
 .notes-column {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-height: calc(100vh - 220px);
-  overflow-y: auto;
-  padding-right: 4px; /* espacio para scrollbar */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  align-content: start;
 }
 
-.notes-column::-webkit-scrollbar {
-  width: 6px;
-}
-.notes-column::-webkit-scrollbar-track {
-  background: #1e1e1e;
-  border-radius: 3px;
-}
-.notes-column::-webkit-scrollbar-thumb {
-  background: #3e68ff;
-  border-radius: 3px;
-}
-
-/* Tarjetas dentro de las columnas */
 .notes-column .card {
-  border: 1px solid #2e2e2e;
-  background: #222;
-  box-shadow: 0 2px 6px rgba(0,0,0,.35);
-  transition: transform .2s, box-shadow .2s;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-elev-2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
+  height: fit-content;
 }
+
 .notes-column .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* Responsividad: en pantallas medianas se permite scroll horizontal */
+.notes-column .card .card-body {
+  padding: 1.25rem;
+}
+
+#notesBoard::-webkit-scrollbar {
+  width: 8px;
+}
+
+#notesBoard::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 4px;
+}
+
+#notesBoard::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+#notesBoard::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
 @media (max-width: 992px) {
-  #notesBoard {
-    flex-direction: column;
+  .notes-main-container {
+    height: calc(100vh - 160px);
+    padding: 1rem;
   }
+  
   .notes-column {
-    max-height: none;
+    grid-template-columns: 1fr;
   }
 }
 
-/* En móviles muy pequeños se apilan verticalmente */
 @media (max-width: 600px) {
+  .notes-main-container {
+    padding: 0.75rem;
+  }
+  
   .notes-column {
-    padding-right: 0;
+    gap: 1rem;
+  }
+  
+  .notes-column .card .card-body {
+    padding: 1rem;
   }
 }
 

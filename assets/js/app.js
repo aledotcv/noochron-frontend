@@ -82,61 +82,57 @@ function getNoteDate(note) {
     return parseFlexibleDate(dateStr);
 }
 
+let currentSortOrder = 'newest';
+let cachedNotes = [];
+
 function populateNotes(notes) {
-    const oldestCol = document.getElementById('col-oldest');
-    const newestCol = document.getElementById('col-newest');
-    if (!oldestCol || !newestCol) {
-        console.warn('Column containers not found, aborting populateNotes.');
+    cachedNotes = notes;
+    renderNotes();
+}
+
+function renderNotes() {
+    const mainCol = document.getElementById('col-main');
+    if (!mainCol) {
+        console.warn('Column container not found, aborting renderNotes.');
         return;
     }
-    oldestCol.innerHTML = '';
-    newestCol.innerHTML = '';
+    mainCol.innerHTML = '';
 
-    if (!Array.isArray(notes) || notes.length === 0) {
-        const emptyMsg = '<p class="empty-notes-msg">No has creado notas.</p>';
-        oldestCol.innerHTML = emptyMsg;
-        newestCol.innerHTML = emptyMsg;
+    if (!Array.isArray(cachedNotes) || cachedNotes.length === 0) {
+        mainCol.innerHTML = '<p class="empty-notes-msg">No has creado notas.</p>';
         return;
     }
 
-    const normalized = notes.map(n => ({ ...n, _date: getNoteDate(n) }))
-        .sort((a, b) => a._date - b._date); 
+    const normalized = cachedNotes.map(n => ({ ...n, _date: getNoteDate(n) }))
+        .sort((a, b) => currentSortOrder === 'newest' ? b._date - a._date : a._date - b._date);
 
-    const newestOrdered = [...normalized].reverse();
-    const oldestOrdered = normalized;
-
-    function renderIntoColumn(list, columnEl) {
-        list.forEach(note => {
-            const cardWrapper = document.createElement('div');
-            cardWrapper.innerHTML = `
-                <div class="card" data-note-id="${note.noteId}" style="animation: bounceIn 0.8s;">
-                    <div class="card-body p-3">
-                        <div class="d-flex flex-column gap-1">
-                            <div>
-                                <h5 style="margin:0;">${note.title}</h5>
-                                <p style="margin:0;font-size:.8rem;opacity:.7;">${note._date.toLocaleDateString('es-MX')}</p>
-                            </div>
-                            <p style="margin:0;font-size:.85rem;">${truncateStr(note.content, 60)}</p>
-                            <div class="note-tags-wrapper d-flex flex-wrap gap-1">
-                                ${String(note.tags || '')
-                                    .split(',')
-                                    .map(t => t.trim())
-                                    .filter(Boolean)
-                                    .map(tag => `<p>${tag}</p>`)
-                                    .join('')}
-                            </div>
+    normalized.forEach(note => {
+        const cardWrapper = document.createElement('div');
+        cardWrapper.innerHTML = `
+            <div class="card" data-note-id="${note.noteId}" style="animation: bounceIn 0.8s;">
+                <div class="card-body p-3">
+                    <div class="d-flex flex-column gap-1">
+                        <div>
+                            <h5 style="margin:0;">${note.title}</h5>
+                            <p style="margin:0;font-size:.8rem;opacity:.7;">${note._date.toLocaleDateString('es-MX')}</p>
+                        </div>
+                        <p style="margin:0;font-size:.85rem;">${truncateStr(note.content, 60)}</p>
+                        <div class="note-tags-wrapper d-flex flex-wrap gap-1">
+                            ${String(note.tags || '')
+                                .split(',')
+                                .map(t => t.trim())
+                                .filter(Boolean)
+                                .map(tag => `<p>${tag}</p>`)
+                                .join('')}
                         </div>
                     </div>
                 </div>
-            `;
-            const card = cardWrapper.querySelector('.card');
-            card.addEventListener('click', () => openNoteModal(note));
-            columnEl.appendChild(cardWrapper.firstElementChild);
-        });
-    }
-
-    renderIntoColumn(newestOrdered, oldestCol);
-    renderIntoColumn(oldestOrdered, newestCol);
+            </div>
+        `;
+        const card = cardWrapper.querySelector('.card');
+        card.addEventListener('click', () => openNoteModal(note));
+        mainCol.appendChild(cardWrapper.firstElementChild);
+    });
 }
 
 const style = document.createElement('style');
@@ -161,6 +157,22 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
+let originalNoteState = {
+    title: '',
+    content: '',
+    tags: ''
+};
+
+function hasNoteChanged() {
+    const currentTitle = document.getElementById('noteTitle').value;
+    const currentContent = document.getElementById('noteContent').value;
+    const currentTags = document.getElementById('noteTags').value;
+    
+    return originalNoteState.title !== currentTitle ||
+           originalNoteState.content !== currentContent ||
+           originalNoteState.tags !== currentTags;
+}
+
 function openNoteModal(note) {
     const modal = document.getElementById('noteModal');
     modal.querySelector('#noteTitle').value = note.title;
@@ -168,6 +180,12 @@ function openNoteModal(note) {
     modal.querySelector('#noteTags').value = note.tags;
     modal.querySelector('#noteId').value = note.noteId;
     modal.style.display = 'block';
+    
+    originalNoteState = {
+        title: note.title,
+        content: note.content,
+        tags: note.tags
+    };
 }
 
 document.querySelectorAll('#saveNote').forEach(button => {
@@ -193,8 +211,13 @@ document.querySelectorAll('#saveNote').forEach(button => {
             });
 
             if (response.ok) {
+                originalNoteState = {
+                    title: title,
+                    content: content,
+                    tags: tags
+                };
                 await getNotes();
-                closeModal();
+                closeModal(true);
             } else {
                 const errorText = await response.text();
                 alert(`Ocurrio un error al ${noteId ? 'actualizar' : 'crear'} la nota: ${errorText}`);
@@ -224,8 +247,9 @@ document.querySelectorAll('#deleteNote').forEach(button => {
             });
 
             if (response.ok) {
+                originalNoteState = { title: '', content: '', tags: '' };
                 await getNotes();
-                closeModal();
+                closeModal(true);
             } else {
                 const errorText = await response.text();
                 alert(`Ocurrio un error al eliminar la nota: ${errorText}`);
@@ -290,6 +314,99 @@ document.querySelectorAll('#clearButton').forEach(button => {
     });
 });
 
+const clearButtonMobile = document.getElementById('clearButtonMobile');
+if (clearButtonMobile) {
+    clearButtonMobile.addEventListener('click', async () => {
+        document.getElementById('searchInput').value = '';
+        await getNotes();
+    });
+}
+
+const sortButton = document.getElementById('sortButton');
+const sortButtonMobile = document.getElementById('sortButtonMobile');
+const sortModal = document.getElementById('sortModal');
+const closeSortModal = document.getElementById('closeSortModal');
+const sortNewestBtn = document.getElementById('sortNewestBtn');
+const sortOldestBtn = document.getElementById('sortOldestBtn');
+
+if (sortButton) {
+    sortButton.addEventListener('click', () => {
+        sortModal.style.display = 'flex';
+    });
+}
+
+if (sortButtonMobile) {
+    sortButtonMobile.addEventListener('click', () => {
+        sortModal.style.display = 'flex';
+    });
+}
+
+if (closeSortModal) {
+    closeSortModal.addEventListener('click', () => {
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortNewestBtn) {
+    sortNewestBtn.addEventListener('click', () => {
+        currentSortOrder = 'newest';
+        renderNotes();
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortOldestBtn) {
+    sortOldestBtn.addEventListener('click', () => {
+        currentSortOrder = 'oldest';
+        renderNotes();
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortModal) {
+    sortModal.addEventListener('click', (e) => {
+        if (e.target === sortModal) {
+            sortModal.style.display = 'none';
+        }
+    });
+}
+
+if (sortButton) {
+    sortButton.addEventListener('click', () => {
+        sortModal.style.display = 'flex';
+    });
+}
+
+if (closeSortModal) {
+    closeSortModal.addEventListener('click', () => {
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortNewestBtn) {
+    sortNewestBtn.addEventListener('click', () => {
+        currentSortOrder = 'newest';
+        renderNotes();
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortOldestBtn) {
+    sortOldestBtn.addEventListener('click', () => {
+        currentSortOrder = 'oldest';
+        renderNotes();
+        sortModal.style.display = 'none';
+    });
+}
+
+if (sortModal) {
+    sortModal.addEventListener('click', (e) => {
+        if (e.target === sortModal) {
+            sortModal.style.display = 'none';
+        }
+    });
+}
+
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', (event) => {
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
@@ -325,8 +442,26 @@ function formatDate(date) {
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${year}${month}${day}T${hours}${minutes}${seconds}`;
 }
+
+const noteModal = document.getElementById('noteModal');
+if (noteModal) {
+    noteModal.addEventListener('click', (e) => {
+        if (e.target === noteModal) {
+            closeModal();
+        }
+    });
+}
+
 document.getElementById('closeModalView').addEventListener('click', closeModal);
-function closeModal() {
+
+function closeModal(skipConfirmation = false) {
+    if (!skipConfirmation && hasNoteChanged()) {
+        const confirmed = confirm(window.i18n.t('modal.confirmClose'));
+        if (!confirmed) {
+            return;
+        }
+    }
+    
     const modal = document.getElementById('noteModal');
     modal.style.display = 'none';
 }

@@ -1,9 +1,10 @@
 .brand-logo {
-  height: 48px;
+  height: 40px;
   width: auto;
-  max-width: 220px;
+  max-width: 180px;
   object-fit: contain;
-  display: block;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .view-header-top {
@@ -23,8 +24,8 @@
 
 @media (max-width: 768px) {
   .brand-logo {
-    height: 36px;
-    max-width: 180px;
+    height: 32px;
+    max-width: 140px;
   }
   .view-header-top {
     gap: 16px;
@@ -38,8 +39,8 @@
 
 @media (max-width: 480px) {
   .brand-logo {
-    height: 32px;
-    max-width: 150px;
+    height: 28px;
+    max-width: 120px;
   }
   .view-header-top {
     gap: 12px;
